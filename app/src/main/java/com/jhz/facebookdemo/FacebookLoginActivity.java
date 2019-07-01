@@ -29,6 +29,8 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 
+import com.daniulive.smartplayer.SmartPlayer;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -43,6 +45,7 @@ public class FacebookLoginActivity extends Activity {
     private static final String EMAIL = "email";
     private static final String USER_POSTS = "user_posts";
     private static final String AUTH_TYPE = "rerequest";
+    private static final String PUBLISH_VIDEO ="publish_video";
 
     private CallbackManager mCallbackManager;
 
@@ -60,12 +63,12 @@ public class FacebookLoginActivity extends Activity {
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton mLoginButton = findViewById(R.id.login_button);
         mLoginButton.setReadPermissions(Arrays.asList(EMAIL, USER_POSTS));
-        mLoginButton.setAuthType(AUTH_TYPE);
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                AccessToken.setCurrentAccessToken(loginResult.getAccessToken());
                 setResult(RESULT_OK);
-                startActivity(new Intent(getApplicationContext(),ShareActivity.class));
+                startActivity(new Intent(getApplicationContext(), SmartPlayer.class));
             }
             @Override
             public void onCancel() {
